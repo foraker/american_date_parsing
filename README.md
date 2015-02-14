@@ -94,6 +94,7 @@ en:
     attributes:
       activates_on:
         blank: is required
+        invalid: needs to be formatted as MM/DD/YYYY
 ```
 
 
