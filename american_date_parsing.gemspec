@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["bae@foraker.com"]
   spec.description   = %q{American date parsing for ActiveRecord and ActiveModel}
   spec.summary       = %q{American date parsing for ActiveRecord and ActiveModel}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/foraker/american_date_parsing"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
