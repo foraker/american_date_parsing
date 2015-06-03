@@ -3,16 +3,16 @@ require "active_support/core_ext"
 require "chronic"
 
 module AmericanDateParsing
-  mattr_writer :delimiter, :date_format
-
-  DEFAULT_DELIMITER = "/|-"
-
-  def self.delimiter
-    DEFAULT_DELIMITER
+  mattr_accessor :delimiter do
+    "[/|-]{1}"
   end
 
-  def self.date_format
-    @date_format ||= %r{\d{1,2}#{delimiter}\d{1,2}#{delimiter}\d{2,4}}
+  def self.default_format
+    @default_format ||= %r{\d{1,2}#{delimiter}\d{1,2}#{delimiter}\d{2,4}}
+  end
+
+  mattr_accessor :date_format do
+    @date_format ||= default_format
   end
 
   def parse_as_americanized_date(*attributes)

@@ -47,6 +47,14 @@ describe AmericanDateParsing do
       errors("12252012").must_include('is invalid')
     end
 
+    it "rejects dates with extraneous delimiters" do
+      errors("12/25//2012").must_include('is invalid')
+    end
+
+    it "rejects dates with missing delimiters" do
+      errors("12/252012").must_include('is invalid')
+    end
+
     it "rejects nonsense dates" do
       errors("cats").must_include('is invalid')
     end
