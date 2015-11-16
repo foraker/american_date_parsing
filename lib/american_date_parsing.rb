@@ -8,7 +8,7 @@ module AmericanDateParsing
   end
 
   def self.default_format
-    @default_format ||= %r{\d{1,2}#{delimiter}\d{1,2}#{delimiter}\d{2,4}}
+    @default_format ||= %r{\d{1,2}#{delimiter}\d{1,2}#{delimiter}\d{2,4}( \d{1,2}:\d{2}( )?(PM|AM))?}
   end
 
   mattr_accessor :date_format do
@@ -31,9 +31,9 @@ module AmericanDateParsing
 
       define_method "#{attribute}=" do |date_string|
         parsed = if date_string.respond_to?(:strftime)
-          date_string.to_date
+          date_string.to_datetime
         else
-          Chronic.parse(date_string.to_s).try(:to_date)
+          Chronic.parse(date_string.to_s).try(:to_datetime)
         end
 
         send(:"_raw_#{attribute}=", date_string)
