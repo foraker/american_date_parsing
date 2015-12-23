@@ -73,7 +73,7 @@ describe AmericanDateParsing do
       with_date("12-25-2012").must_equal Date.new(2012, 12, 25)
     end
 
-    it "accepts abberviated years" do
+    it "accepts abbreviated years" do
       with_date("12/25/12").must_equal Date.new(2012, 12, 25)
     end
 
@@ -91,6 +91,16 @@ describe AmericanDateParsing do
 
     it "sets nonsense dates to nil" do
       with_date("cats").must_equal nil
+    end
+
+    # Chronic.parse has some interesting side effects:
+
+    it "accepts words like 'tomorrow'" do
+      with_date("tomorrow").must_equal Date.tomorrow
+    end
+
+    it "assumes time-like integers are the current date" do
+      with_date("2").must_equal Date.today
     end
   end
 end
