@@ -33,7 +33,7 @@ module AmericanDateParsing
         parsed = if date_string.respond_to?(:strftime)
           date_string.to_date
         else
-          Chronic.parse(date_string.to_s).try(:to_date)
+          DateParser.parse(date_string.to_s)
         end
 
         send(:"_raw_#{attribute}=", date_string)
@@ -103,6 +103,76 @@ module AmericanDateParsing
 
       def validate_presence?
         options[:presence]
+      end
+    end
+  end
+
+  class DateParser
+    def self.parse(string)
+      new(string).parse
+    end
+
+    def initialize(string)
+      self.string     = string
+    end
+
+    def parse
+      american_date
+    end
+
+    private
+
+    attr_accessor :string
+
+    def american_date
+      Date.new(year, month, day) rescue nil
+    end
+
+    def components
+      string.split(Regexp.new(AmericanDateParsing.delimiter))
+    end
+
+    def year
+      Year.new(components[2]).to_i
+    end
+
+    def month
+      components[0].to_i
+    end
+
+    def day
+      components[1].to_i
+    end
+
+    class Year
+      def initialize(string)
+        self.base = string
+      end
+
+      def to_i
+        if    zero?      then nil
+        elsif two_digit? then four_digit_year
+        else                  base.to_i
+        end
+      end
+
+      private
+
+      attr_accessor :base
+
+      def zero?
+        base.to_i.zero?
+      end
+
+      def two_digit?
+        base.length == 2
+      end
+
+      def four_digit_year
+        [
+          Date.today.year.to_s[0..1],
+          base
+        ].join.to_i
       end
     end
   end

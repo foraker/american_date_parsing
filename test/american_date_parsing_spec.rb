@@ -39,10 +39,6 @@ describe AmericanDateParsing do
       errors("12-25-2012").wont_include('is invalid')
     end
 
-    it "accepts abbreviated delimiters" do
-      errors("12-25-2012").wont_include('is invalid')
-    end
-
     it "rejects non-delimited dates" do
       errors("12252012").must_include('is invalid')
     end
@@ -61,6 +57,10 @@ describe AmericanDateParsing do
 
     it "rejects missing dates" do
       errors("").must_include('can\'t be blank')
+    end
+
+    it "rejects integers" do
+      errors("4").must_include('is invalid')
     end
   end
 
@@ -91,16 +91,6 @@ describe AmericanDateParsing do
 
     it "sets nonsense dates to nil" do
       with_date("cats").must_equal nil
-    end
-
-    # Chronic.parse has some interesting side effects:
-
-    it "accepts words like 'tomorrow'" do
-      with_date("tomorrow").must_equal Date.tomorrow
-    end
-
-    it "assumes time-like integers are the current date" do
-      with_date("2").must_equal Date.today
     end
   end
 end
